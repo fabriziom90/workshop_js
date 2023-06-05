@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <title>Memory game</title>
+</head>
+<body>
+    <header>
+        <div class="d-flex justify-content-between align-items-center h-100 mx-2">
+            <h1 class="main-color">
+                Boolmemory game
+            </h1>
+            <div>
+                <select id="difficulty">
+                    <option value="">Seleziona difficoltà</option>
+                    <option value="0">Facile</option>
+                    <option value="1">Difficile</option>
+                </select>  
+                <button id="start">Inizia partita</button>   
+            </div>
+        </div>
+    </header>
+    <main class="mt-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div id="timer">
+                        <span id="minutes">00</span>
+                        :
+                        <span id="seconds">00</span>
+                    </div>
+                    <div id="grid" class="d-flex justify-content-around align-items-center flex-wrap">
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="./js/script.js" type="text/javascript"></script>
+</body>
+</html>
