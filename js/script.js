@@ -139,7 +139,7 @@ const films = [
 ];
 
 // FUNZIONE CHE GENERA LA GRIGLIA DI CARTE
-function createNewGame(timer){
+function createNewGame(){
     // RECUPERO TUTTI GLI ELEMENTI DEL DOM CHE MI SERVONO
     const grid = document.getElementById('grid');
     const select = document.getElementById('difficulty');
@@ -163,19 +163,21 @@ function createNewGame(timer){
             alert('Seleziona un livello di difficoltà per giocare');
             break;
     }
+    //GENERO L'ARRAY DELLE CARTE RANDOMICHE
 
     let arrayCards = createArrayCards(films, difficulty);
+    //CREO L'ARRAY DELLE CARTE DI GIOCO A PARTIRE DA QUELLO PRECEDENTE E RANDOMICIZZANDONE L'ORDINE
     let totalCards = [...arrayCards, ...arrayCards].sort(() => 0.5 - Math.random());
     
     
     //ESEGUO LA FUNZIONE CHE CREA LE CARTE DI GIOCO
-    createCards(difficulty, totalCards, timer);
+    createCards(difficulty, totalCards);
 
     
 }
 
 // FUNZIONE CHE CREA SOLO GRAFICAMENTE LE CARTE DI GIOCO
-function createGameCard(cardPerRow, arrayCards, i){
+function createGraphicCard(cardPerRow, film){
     const card = document.createElement('div');
     card.classList.add('game-card');
     card.style.width =`calc(100% / ${cardPerRow} - 20px)`;
@@ -190,9 +192,9 @@ function createGameCard(cardPerRow, arrayCards, i){
 
     card.style.margin = '10px';
     //IMPOSTO UN DATA ATTRIBUTE PER RECUPERARE IL NOME DEL FILM 
-    card.dataset.name = arrayCards[i].name;
+    card.dataset.name = film.name;
     card.innerHTML += `<img src="./img/card-back-black.png" class="card-face-back h-100">`
-    card.innerHTML += `<img src="./img/${arrayCards[i].img}" class="card-face-front">`
+    card.innerHTML += `<img src="./img/${film.img}" class="card-face-front">`
     
     return card;
 }
@@ -203,14 +205,14 @@ function createArrayCards(array_films, total_cards){
 }
 
 // FUNZIONE CHE REALIZZA LA STRUTTURA INTERATTIVA DELLA CARTA DI GIOCO
-function createCards(total_cards, arrayCards, timer){
+function createCards(total_cards, arrayCards){
 
     let cardPerRow = Math.sqrt(total_cards);
     let flipped = []; //array per il controllo se le carte girate sono uguali
     let guessed = []; // array che contiene le carte indovinate (POSSIBILE IMPLEMENTAZIONE);
 
-    for(let i=0; i<total_cards; i++){
-        const card = createGameCard(cardPerRow, arrayCards, i);
+    arrayCards.forEach((elem) => {
+        const card = createGraphicCard(cardPerRow, elem);
         
         card.addEventListener('click', function(){
             this.classList.add('flipped');
@@ -228,8 +230,10 @@ function createCards(total_cards, arrayCards, timer){
                     flipped = [];
 
                     //SE L'ARRAY DELLE CARTE INDOVINATE HA LA STESSA LUNGHEZZA DI QUELLO DELLE CARTE ALLORA LA PARTITA E' TERMINATA, HO INDOVINATO TUTTE LE CARTE, INTERROMPO IL TIMER
-                    if(guessed.length == arrayCards.length){
-                        clearInterval(timer);
+                    if(guessed.length === arrayCards.length / 2){
+                        setTimeout(() => {
+                            alert('Hai vinto');
+                        }, 2000);
                     }
                 }
                 else{
@@ -238,14 +242,15 @@ function createCards(total_cards, arrayCards, timer){
                         //DOPO UN SECONDO RIMUOVO LA CLASSE FLIPPED
                         setTimeout(() => elem.classList.remove('flipped'), 1000);
                     })
-    
+                    
+                    guessed = [];
                     flipped = [];
                 }
             }
         })
 
         grid.append(card);
-    }
+    });
 }
 
 //FUNZIONE CHE MOSTRA IL TIMER UP DELLA PARTITA
@@ -271,17 +276,13 @@ function formatting_timer(value){
 }
 
 const button = document.getElementById('start');
-let timer;
 
 button.addEventListener('click', function(){
     //CANCELLO PREVENTIVAMENTE IL TIMER SE ATTIVO
     clearInterval(timer);
 
-    //INIZIO UN NUOVO TIMER
-    timer = startTimer();
-
     //INIZA UNA NUOVA PARTITA
-    createNewGame(timer);
+    createNewGame();
 });
 
 
